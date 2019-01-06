@@ -1,0 +1,17 @@
+-----------------------------------------
+
+K7BBR Weather Station, Woods Cross, Utah
+
+Time: Sun Jan  6 07:01:56 2019
+Outdoor Temperature: -2.40 (27.68 deg F)
+RH: 70.30%
+Indoor Temperature: -0.26 (31.53 deg F)
+Barometric Pressure: 29.86
+Wind Dir: 315.00
+Wind Speed: 7.29
+Wind Gust: 5.84
+Hourly Rain Total: 0.00
+24 Hour Rain Total 0.00
+Today's High/Low Temperatures(in deg F): 27.68/27.50
+
+-----------------------------------------
