@@ -50,7 +50,7 @@ if (WiFi.status() == WL_CONNECTED) //Check WiFi connection status
     if (httpCode > 0) //Check the returning code
     { 
       payload = http.getString();   //Get the request response payload
-      Serial.println(payloadRef);                     //Print the response payload ****** for DEBUG
+      Serial.println(payloadRef);   //Print the response payload ****** for DEBUG
     }
     http.end();   //Close connection
   }
