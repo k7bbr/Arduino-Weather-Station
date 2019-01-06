@@ -32,7 +32,6 @@ tomorrow = today + datetime.timedelta(1)
 
 def processYesterday():
 	currentTime = datetime.datetime.now()
-	#print currentTime
 	global prevHour
 	yesterday = currentTime - datetime.timedelta(1)
 	yesterhour = currentTime - datetime.timedelta(0,0,0,0,0,1,0)
@@ -94,17 +93,15 @@ def tempLow(poutTempFahr):
 	
 
 '''--------Request WeatherBoard Data---------'''
-port = "/dev/ttyACM0"
-#fullDataRequest = "http://192.168.1.130/FullDataString"
-#logFile = "/home/pi/python/weather/current.txt"			#enter name of logfile
-logFile = "/media/pi/24F0-C445/python/weather/current.txt"
-rawFile = "/media/pi/24F0-C445/python/weather/raw.json"
-rainHourlyFile = "/media/pi/24F0-C445/python/weather/hourlyrain.txt"
-rainDailyFile = "/media/pi/24F0-C445/python/weather/dailyrain.txt"
-highLowDailyFile = "/media/pi/24F0-C445/python/weather/dailytemps.txt"
+port = "/dev/ttyACM0"			
+logFile = "current.txt" #enter name (and location if desired) of logfiles
+rawFile = "raw.json"
+rainHourlyFile = "hourlyrain.txt"
+rainDailyFile = "/dailyrain.txt"
+highLowDailyFile = "dailytemps.txt"
 MBTOINCH = 0.00029530
 ELEV = 0.0
-ELEVMB = 146.555
+ELEVMB = 146.555 #enter elevation correction for barometric pressure (elevation in ft/10)
 prevRain = 0.0
 
 '''Inititalize rainHourlyArray'''
@@ -119,8 +116,6 @@ nextChar = ''
 
 '''Get serial data if it's available'''
 while True:
-	#processTime()
-	
 	if (ser.inWaiting() >= 0):
 		serBuffer = ser.readline()
 		bytesToRead = ser.inWaiting()
@@ -132,7 +127,7 @@ while True:
 		header = "-----------------------------------------"
 		print (header)
 		print ""
-		title = "K7BBR Weather Station, Woods Cross, Utah"
+		title = "K7BBR Weather Station, Woods Cross, Utah" #customize your name and location here
 		print (title)
 		print ""
 		timestamp = time.asctime(time.gmtime())
@@ -146,7 +141,6 @@ while True:
 		outTempFahr = ("{:.2f}".format(outTempFahr))
 		outTemp = ("Outdoor Temperature: " + dataArray[5] + " (" +str(outTempFahr) + " deg F)")
 		print (outTemp)
-		#print ("{:.2f}".format(outTempFahr))
 		humid = ("RH: " +dataArray[4] + "%")      
 		print (humid)
 		global inTempCel
@@ -157,12 +151,8 @@ while True:
 		inTemp = ("Indoor Temperature: " + dataArray[6] + " (" +(inTempStr) + " deg F)")
 		print (inTemp)
 		baroInch = dataArray[7]
-		baroInchRaw = str(dataArray[7])
-		#baroInch = (baroFloat * MBTOINCH)
-		#baroInchStr = "{:.2f}".format(baroInch)
-		
+		baroInchRaw = str(dataArray[7])		
 		baro = ("Barometric Pressure: " + dataArray[7])
-		
 		print (baro)
 		windDir = ("Wind Dir: " + dataArray[3])
 		windDirRaw = str(dataArray[3])
@@ -183,9 +173,7 @@ while True:
 		dayrain = ("24 Hour Rain Total " + ("{:.2f}".format(rainTotal)))
 		print (dayrain)
 		tempHi(float(outTempFahr))
-		#tempHiRaw = str(tempHi)
-		tempLow(float(outTempFahr))
-		#tempLowRaw = str(tempLow)
+		tempLow(float(outTempFahr)
 		highLow = ("Today's High/Low Temperatures(in deg F): " + ("{:.2f}".format(highTemp)) + "/" + ("{:.2f}".format(lowTemp)))
 		highLowRaw = ("High/Low (in deg F): " + ("{:.2f}".format(highTemp)) + "/" + ("{:.2f}".format(lowTemp)))
 		tempHighRaw = ("{:.2f}".format(highTemp))
@@ -210,6 +198,7 @@ while True:
 					highLow + "\n" + "\n" +
 					header)				    
 		log.write(logentry)
+			
 		'''------------------------------------Create JSON file-----------------------'''
 		raw = open(rawFile, 'w')
 		rawentry = 	("{" + "\"time\"" + ":" + "\"" + currentTime + "\"" + "," +
@@ -227,7 +216,7 @@ while True:
 					"\"high\"" + ":" + "\"" +tempHighRaw + "\"" + "," +
 					"\"low\"" + ":" + "\"" +tempLowRaw + "\"" "}")
 		raw.write(rawentry)
-		print (rawentry)
+		print(rawentry)
 		
 		'''-------------------------------------Check Time Passage---------------------'''		
 		#hourCheck = 0 # for testing
@@ -239,9 +228,5 @@ while True:
 		if ((dayCheck) != (dayOfMonth)):
 			dayChange()
 			dayCheck = dayOfMonth
-			
-		
-		#nextChar = ''
-		#serBuffer = ''
-		
+	
 		time.sleep(2)
